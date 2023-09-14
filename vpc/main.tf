@@ -678,7 +678,7 @@ resource "aws_iam_policy" "fl-policy" {
   name        = "${var.vpc_name}-flowlog-policy"
   path        = "/"
   description = "cloudwatch policy for vpc flowlogs"
-  policy      = data.aws_iam_policy_document.cloudwatch_role_policy.json
+  policy      = data.aws_iam_policy_document.cloudwatch_role_policy[0].json
 tags = merge(
     var.defaultTags,
     var.vpc_tags
@@ -690,6 +690,7 @@ tags = merge(
 
 # Define FlowLog Role Policy
 data "aws_iam_policy_document" "cloudwatch_role_policy" {
+  count      = var.enable_flow_log ? 1 : 0
   statement {
     resources = ["${aws_cloudwatch_log_group.cw-flowlog-loggroup[0].arn}"]
     actions = [
