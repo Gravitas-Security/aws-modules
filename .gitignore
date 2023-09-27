@@ -1,0 +1,33 @@
+# **************************************************
+# Terraform-specific exclusions
+#
+# The exclusions listed below apply to all Terraform projects.
+# Any project-specific rules should be placed in that project's own .gitignore file.
+# **************************************************
+
+# Local .terraform state directories
+**/.terraform/
+
+# Local user-created files that shouldn't be included as part of the repo.
+# Following a similar convention used for '.csproj' files.
+*.user.tfvars
+*.user.tfvars.json
+*.user.auto.tfvars
+*.user.auto.tfvars.json
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# Ignore override files as they are usually used to override resources locally and so
+# are not checked in
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Safety exclusions - these files, if they get saved in the working directory, could contain sensitive info.
+# Terraform 'plan' files
+*.tfplan
+# Crash log files
+crash.log
