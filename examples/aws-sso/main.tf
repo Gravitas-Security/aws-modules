@@ -10,8 +10,8 @@ module "sso" {
         ]
       group = "aws-admin"
       assignments = [
-        "123456789123", 
-        "987654321987"
+        "808696518247", 
+        "047640678298"
         ]
       inline_policy = data.aws_iam_policy_document.security-admin-policy.json
     }

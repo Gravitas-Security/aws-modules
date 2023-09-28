@@ -2,14 +2,36 @@ data "aws_ssoadmin_instances" "sso-instance" {}
 
 data "aws_organizations_organization" "org" {}
 
-data "aws_organizations_organizational_units" "ou" {
-  parent_id = data.aws_organizations_organization.org.roots[0].id
+# data "aws_organizations_organizational_units" "ou" {
+#   parent_id = data.aws_organizations_organization.org.roots[0].id
+# }
+
+# data "aws_organizations_organizational_unit_descendant_accounts" "org" {
+#   for_each  = { for ou in data.aws_organizations_organizational_units.ou.children : ou.name => ou.id }
+#   parent_id = each.value
+# }
+
+data "aws_ssoadmin_permission_set" "admin_permission_sets" {
+  instance_arn = tolist(data.aws_ssoadmin_instances.sso-instance.arns)[0]
+  name         = "AdministratorAccess"
 }
 
-data "aws_organizations_organizational_unit_descendant_accounts" "org" {
-  for_each  = { for ou in data.aws_organizations_organizational_units.ou.children : ou.name => ou.id }
-  parent_id = each.value
-}
+ resource "aws_ssoadmin_account_assignment" "admin_acct_assignment" {
+   count = length(local.org_accounts)
+   #for_each = { for act in local.org_accounts : "${act.id}" => act }
+   instance_arn       = tolist(data.aws_ssoadmin_instances.sso-instance.arns)[0]
+   permission_set_arn = data.aws_ssoadmin_permission_set.admin_permission_sets.arn
+   principal_id       = data.aws_identitystore_group.id_store["aws-admin"].id
+   principal_type     = "GROUP"
+
+   target_id   = data.aws_organizations_organization.org.non_master_accounts[count.index].id
+   target_type = "AWS_ACCOUNT"
+   depends_on = [ 
+     aws_ssoadmin_permission_set.permissions_set,
+     data.aws_identitystore_group.id_store
+     ]
+     }
+
 
 resource "aws_ssoadmin_permission_set" "permissions_set" {
   for_each = var.roles

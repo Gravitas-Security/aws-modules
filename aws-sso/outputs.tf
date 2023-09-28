@@ -13,3 +13,7 @@ output "assignments" {
 output "groups" {
   value = data.aws_identitystore_group.id_store
 }
+
+output "non_master_accounts" {
+  value = data.aws_organizations_organization.org.non_master_accounts[*].id
+}
