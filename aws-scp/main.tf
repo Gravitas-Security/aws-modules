@@ -1,19 +1,5 @@
 data "aws_organizations_organization" "org" {}
 
-data "aws_organizations_organizational_unit" "dev_ou" {
-  parent_id = data.aws_organizations_organization.org.roots[0].id
-  name      = "Non-Production"
-}
-
-data "aws_organizations_organizational_unit" "prod_ou" {
-  parent_id = data.aws_organizations_organization.org.roots[0].id
-  name      = "Production"
-}
-
-data "aws_organizations_organizational_units" "ous" {
-  parent_id = data.aws_organizations_organization.org.roots[0].id
-}
-
 resource "aws_organizations_policy" "org_scp" {
     for_each = var.policies
   name    = each.key
