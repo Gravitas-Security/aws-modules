@@ -5,7 +5,7 @@ resource "aws_organizations_policy" "org_scp" {
   name    = each.key
   description = each.value.description
   type = "SERVICE_CONTROL_POLICY"
-  content = data.aws_iam_policy_document.[each.key].json
+  content = each.value.policy
 }
 
 resource "aws_organizations_policy_attachment" "org_scp_attachment" {

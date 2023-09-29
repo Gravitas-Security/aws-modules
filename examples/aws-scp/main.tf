@@ -3,12 +3,12 @@ module "aws-scp" {
   policies = {
     deny_root_user = {
       description = "Deny root user access to all AWS services and resources."
-      policy     = "deny_root"
+      policy     = data.aws_iam_policy_document.deny_root.json
       attachments = ["r-abcd"]
     }
     deny_leaving_org = {
       description = "Deny root user access to all AWS services and resources."
-      policy     = "deny_org_leave"
+      policy     = data.aws_iam_policy_document.deny_org_leave.json
       attachments = ["r-abcd"]
     }
     deny_admin_policy = {
