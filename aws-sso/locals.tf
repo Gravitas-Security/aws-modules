@@ -23,5 +23,4 @@ assignment_map = flatten([
   identity_store_id = tolist(data.aws_ssoadmin_instances.sso-instance.identity_store_ids)[0]
   group_list = toset([for mapping in var.roles : mapping.group])
 
-  org_accounts = data.aws_organizations_organization.org.non_master_accounts[*].id
 }
