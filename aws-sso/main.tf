@@ -16,21 +16,21 @@ data "aws_ssoadmin_permission_set" "admin_permission_sets" {
   name         = "AdministratorAccess"
 }
 
- resource "aws_ssoadmin_account_assignment" "admin_acct_assignment" {
-   count = length(local.org_accounts)
-   #for_each = { for act in local.org_accounts : "${act.id}" => act }
-   instance_arn       = tolist(data.aws_ssoadmin_instances.sso-instance.arns)[0]
-   permission_set_arn = data.aws_ssoadmin_permission_set.admin_permission_sets.arn
-   principal_id       = data.aws_identitystore_group.id_store["aws-admin"].id
-   principal_type     = "GROUP"
+#  resource "aws_ssoadmin_account_assignment" "admin_acct_assignment" {
+#    count = length(local.org_accounts)
+#    #for_each = { for act in local.org_accounts : "${act.id}" => act }
+#    instance_arn       = tolist(data.aws_ssoadmin_instances.sso-instance.arns)[0]
+#    permission_set_arn = data.aws_ssoadmin_permission_set.admin_permission_sets.arn
+#    principal_id       = data.aws_identitystore_group.id_store["aws-admin"].id
+#    principal_type     = "GROUP"
 
-   target_id   = data.aws_organizations_organization.org.non_master_accounts[count.index].id
-   target_type = "AWS_ACCOUNT"
-   depends_on = [ 
-     aws_ssoadmin_permission_set.permissions_set,
-     data.aws_identitystore_group.id_store
-     ]
-     }
+#    target_id   = data.aws_organizations_organization.org.non_master_accounts[count.index].id
+#    target_type = "AWS_ACCOUNT"
+#    depends_on = [ 
+#      aws_ssoadmin_permission_set.permissions_set,
+#      data.aws_identitystore_group.id_store
+#      ]
+#      }
 
 
 resource "aws_ssoadmin_permission_set" "permissions_set" {
@@ -40,7 +40,7 @@ resource "aws_ssoadmin_permission_set" "permissions_set" {
   description      = lookup(each.value, "description", null)
   instance_arn     = tolist(data.aws_ssoadmin_instances.sso-instance.arns)[0]
   relay_state      = lookup(each.value, "relay_state", null)
-  session_duration = lookup(each.value, "session_duration", null)
+  session_duration = lookup(each.value, "session_duration", null) != null ? lookup(each.value, "session_duration") : "PT2H"
   tags             = lookup(each.value, "tags", {})
 }
 
@@ -84,13 +84,13 @@ data "aws_identitystore_group" "id_store" {
 }
 
  resource "aws_ssoadmin_account_assignment" "acct-assignment" {
-   for_each = { for act in local.assignment_map : "${act.target_id}_${act.name}" => act }
+   for_each = { for act in local.assignment_map : "${act.target_id}" => act }
    instance_arn       = tolist(data.aws_ssoadmin_instances.sso-instance.arns)[0]
    permission_set_arn = aws_ssoadmin_permission_set.permissions_set[each.value.name].arn
    principal_id       = data.aws_identitystore_group.id_store[each.value.group].id
    principal_type     = "GROUP"
 
-   target_id   = trimsuffix(each.key, "_${each.value.name}")
+   target_id   = each.key
    target_type = "AWS_ACCOUNT"
    depends_on = [ 
      aws_ssoadmin_permission_set.permissions_set,
