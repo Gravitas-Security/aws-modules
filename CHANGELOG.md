@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/CyberViking949/aws-modules/compare/v1.0.0...v1.1.0) (2023-10-03)
+
+
+### Features
+
+* Delete aws-scp/providers.tf ([cffbbbc](https://github.com/CyberViking949/aws-modules/commit/cffbbbc14f277d2eee0e2286dcdaedba1aa37c33))
+
 ## [1.0.0](https://github.com/CyberViking949/aws-modules/compare/v0.1.0...v1.0.0) (2023-10-03)
 
 
