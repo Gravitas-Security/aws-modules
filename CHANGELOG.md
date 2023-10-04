@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/CyberViking949/aws-modules/compare/v1.1.0...v1.2.0) (2023-10-04)
+
+
+### Features
+
+* Delete aws-sso/providers.tf ([098ad4a](https://github.com/CyberViking949/aws-modules/commit/098ad4a9395c465ca82cdafe5d721f6721fb3f0d))
+
 ## [1.1.0](https://github.com/CyberViking949/aws-modules/compare/v1.0.0...v1.1.0) (2023-10-03)
 
 
