@@ -1,38 +1,3 @@
-# Create AzureAD Config
-data "azuread_client_config" "client_config" {}
-
-# Create AzureAD Groups based off the role name
-resource "azuread_group" "aad_groups" {
-  for_each = var.roles
-  display_name     = format("aws-role-%s", each.key)
-  owners           = [data.azuread_client_config.client_config.object_id]
-  security_enabled = true
-}
-
-#import the AWS SSO Application
-data "azuread_application" "aws_sso" {
-  display_name = "AWS IAM Identity Center (successor to AWS Single Sign-On)"
-}
-
-resource "azuread_service_principal" "aws_sso" {
-  application_id               = data.azuread_application.aws_sso.application_id
-  use_existing = true
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-resource "azuread_app_role_assignment" "group_assignment" {
-  for_each = azuread_group.aad_groups
-  app_role_id         = azuread_service_principal.aws_sso.app_role_ids["User"]
-  principal_object_id = azuread_group.aad_groups[each.key].object_id
-  resource_object_id  = azuread_service_principal.aws_sso.object_id
-  depends_on = [ 
-    azuread_service_principal.aws_sso,
-    azuread_group.aad_groups
-    ]
-}
-
 data "aws_ssoadmin_instances" "sso-instance" {}
 
 data "aws_organizations_organization" "org" {}
