@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/CyberViking949/aws-modules/compare/v1.4.0...v1.5.0) (2023-10-06)
+
+
+### Features
+
+* Adding azuread module ([9489816](https://github.com/CyberViking949/aws-modules/commit/9489816e261dcb5a65a95a51ba6ad75f0362f8b0))
+
 ## [1.4.0](https://github.com/CyberViking949/aws-modules/compare/v1.3.0...v1.4.0) (2023-10-06)
 
 
