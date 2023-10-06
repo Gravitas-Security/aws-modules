@@ -9,7 +9,7 @@ resource "aws_vpc" "vpc" {
   enable_dns_hostnames = true
   enable_dns_support   = true
   tags = merge(
-    {Name = var.vpc_name},
+    { Name = var.vpc_name },
     var.defaultTags,
     var.vpc_tags
   )
@@ -17,16 +17,16 @@ resource "aws_vpc" "vpc" {
 
 # Optional CIDR Expansions
 resource "aws_vpc_ipv4_cidr_block_association" "secondary_cidr" {
-  count         = length(var.secondary_cidr_blocks) > 0 ? length(var.secondary_cidr_blocks) : 0
-  vpc_id        = aws_vpc.vpc.id
-  cidr_block    = try(var.secondary_cidr_blocks, null)
+  count      = length(var.secondary_cidr_blocks) > 0 ? length(var.secondary_cidr_blocks) : 0
+  vpc_id     = aws_vpc.vpc.id
+  cidr_block = try(var.secondary_cidr_blocks, null)
 }
 
 # Assume control of the Default VPC Security Group and delete all rules
 resource "aws_default_security_group" "default_sg" {
   vpc_id = aws_vpc.vpc.id
   tags = merge(
-    {Name = "${var.vpc_name}-default-sg-DO-NOT-USE"},
+    { Name = "${var.vpc_name}-default-sg-DO-NOT-USE" },
     var.defaultTags,
     var.vpc_tags
   )
@@ -39,7 +39,7 @@ resource "aws_default_security_group" "default_sg" {
 resource "aws_default_route_table" "default_rt" {
   default_route_table_id = aws_vpc.vpc.default_route_table_id
   tags = merge(
-    {Name = "${var.vpc_name}-default-rt"},
+    { Name = "${var.vpc_name}-default-rt" },
     var.defaultTags,
     var.vpc_tags
   )
@@ -50,10 +50,10 @@ resource "aws_default_route_table" "default_rt" {
 
 # Assume control of the default VPC DHCP option set
 resource "aws_vpc_dhcp_options" "vpc_dhcp_options" {
-  domain_name = "us-west-2.compute.internal"
+  domain_name         = "us-west-2.compute.internal"
   domain_name_servers = ["AmazonProvidedDNS"]
   tags = merge(
-    {Name = "${var.vpc_name}-vpc-dhcp"},
+    { Name = "${var.vpc_name}-vpc-dhcp" },
     var.defaultTags,
     var.vpc_tags
   )
@@ -73,9 +73,9 @@ resource "aws_vpc_dhcp_options_association" "dhcp_options_association" {
 ## Create Connective Tissues
 # Create internet gateway
 resource "aws_internet_gateway" "igw" {
-  vpc_id        = aws_vpc.vpc.id
+  vpc_id = aws_vpc.vpc.id
   tags = merge(
-    {Name = "${var.vpc_name}-igw"},
+    { Name = "${var.vpc_name}-igw" },
     var.defaultTags,
     var.vpc_tags
   )
@@ -86,8 +86,8 @@ resource "aws_internet_gateway" "igw" {
 
 # Create N # of Elastip Ip's for the NatGW's below
 resource "aws_eip" "nat" {
-  count       = local.nat_gateway_count
-  vpc         = true
+  count = local.nat_gateway_count
+  vpc   = true
   tags = merge(
     {
       "Name" = format(
@@ -102,12 +102,12 @@ resource "aws_eip" "nat" {
 
 # Create NatGW's based on the variables `natgw_per_az`
 resource "aws_nat_gateway" "ngw" {
-  count         = local.nat_gateway_count
+  count = local.nat_gateway_count
   allocation_id = element(
     local.nat_gateway_ips,
     count.index,
   )
-  subnet_id     = element(
+  subnet_id = element(
     aws_subnet.public[*].id,
     count.index,
   )
@@ -134,10 +134,10 @@ resource "aws_subnet" "public" {
   availability_zone       = length(regexall("^[a-z]{2}-", element(var.azs, count.index))) > 0 ? element(var.azs, count.index) : null
   map_public_ip_on_launch = false
   tags = merge(
-    {Name = format(
-        "${var.vpc_name}-public-%s",
-        element(var.azs, count.index),
-    )
+    { Name = format(
+      "${var.vpc_name}-public-%s",
+      element(var.azs, count.index),
+      )
     },
     {
       "kubernetes.io/role/elb" = 1
@@ -152,14 +152,14 @@ resource "aws_subnet" "public" {
 
 # Create route table to for public subnets
 resource "aws_route_table" "public_route_tb" {
-  count        = length(var.public_subnets) > 0 ? 1 : 0
-  vpc_id       = aws_vpc.vpc.id
+  count  = length(var.public_subnets) > 0 ? 1 : 0
+  vpc_id = aws_vpc.vpc.id
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.igw.id
   }
-    tags = merge(
-    {Name = "${var.vpc_name}-public_rt"},
+  tags = merge(
+    { Name = "${var.vpc_name}-public_rt" },
     var.defaultTags,
     var.vpc_tags
   )
@@ -192,7 +192,7 @@ resource "aws_route_table_association" "public_route_tb" {
 
 # Create the public_subnet VPC NACL
 resource "aws_network_acl" "public_nacl" {
-  vpc_id   = aws_vpc.vpc.id
+  vpc_id     = aws_vpc.vpc.id
   subnet_ids = aws_subnet.public[*].id
   ingress {
     protocol   = 6
@@ -235,7 +235,7 @@ resource "aws_network_acl" "public_nacl" {
     to_port    = 0
   }
   tags = merge(
-    {Name = "${var.vpc_name}-public-nacl"},
+    { Name = "${var.vpc_name}-public-nacl" },
     var.defaultTags,
     var.vpc_tags
   )
@@ -257,10 +257,10 @@ resource "aws_subnet" "private" {
   availability_zone       = length(regexall("^[a-z]{2}-", element(var.azs, count.index))) > 0 ? element(var.azs, count.index) : null
   map_public_ip_on_launch = false
   tags = merge(
-    {Name = format(
-        "${var.vpc_name}-private-%s",
-        element(var.azs, count.index),
-    )
+    { Name = format(
+      "${var.vpc_name}-private-%s",
+      element(var.azs, count.index),
+      )
     },
     {
       "kubernetes.io/role/internal-elb" = 1
@@ -282,8 +282,8 @@ resource "aws_subnet" "private" {
 
 #  Create private subnet route table
 resource "aws_route_table" "private_route_tb" {
-  count          = local.max_subnet_length > 0 ? local.nat_gateway_count : 0
-  vpc_id         = aws_vpc.vpc.id
+  count  = local.max_subnet_length > 0 ? local.nat_gateway_count : 0
+  vpc_id = aws_vpc.vpc.id
   tags = merge(
     {
       Name = format(
@@ -326,7 +326,7 @@ resource "aws_network_acl" "private_nacl" {
   #checkov:skip=CKV_AWS_229
   #checkov:skip=CKV_AWS_231
   #checkov:skip=CKV_AWS_230
-  vpc_id   = aws_vpc.vpc.id
+  vpc_id     = aws_vpc.vpc.id
   subnet_ids = aws_subnet.private[*].id
   ingress {
     protocol   = -1
@@ -345,7 +345,7 @@ resource "aws_network_acl" "private_nacl" {
     to_port    = 0
   }
   tags = merge(
-    {Name = "${var.vpc_name}-private-nacl"},
+    { Name = "${var.vpc_name}-private-nacl" },
     var.defaultTags,
     var.vpc_tags
   )
@@ -366,10 +366,10 @@ resource "aws_subnet" "eks" {
   availability_zone       = length(regexall("^[a-z]{2}-", element(var.azs, count.index))) > 0 ? element(var.azs, count.index) : null
   map_public_ip_on_launch = false
   tags = merge(
-    {Name = format(
-        "${var.vpc_name}-eks-%s",
-        element(var.azs, count.index),
-    )
+    { Name = format(
+      "${var.vpc_name}-eks-%s",
+      element(var.azs, count.index),
+      )
     },
     var.defaultTags,
     var.vpc_tags
@@ -381,8 +381,8 @@ resource "aws_subnet" "eks" {
 
 #  Create eks subnet route table
 resource "aws_route_table" "eks_route_tb" {
-  count         = local.max_subnet_length > 0 ? local.nat_gateway_count : 0
-  vpc_id        = aws_vpc.vpc.id
+  count  = local.max_subnet_length > 0 ? local.nat_gateway_count : 0
+  vpc_id = aws_vpc.vpc.id
   tags = merge(
     {
       Name = format(
@@ -412,9 +412,9 @@ resource "aws_route" "eks_nat_rt" {
 
 # Associate eks subnets with route table
 resource "aws_route_table_association" "eks_route_tb" {
-  count = length(var.eks_subnets) > 0 ? length(var.eks_subnets) : 0
-  subnet_id                = element(aws_subnet.eks[*].id, count.index)
-  route_table_id           = aws_route_table.eks_route_tb[0].id
+  count          = length(var.eks_subnets) > 0 ? length(var.eks_subnets) : 0
+  subnet_id      = element(aws_subnet.eks[*].id, count.index)
+  route_table_id = aws_route_table.eks_route_tb[0].id
   depends_on = [
     aws_route_table.eks_route_tb
   ]
@@ -426,7 +426,7 @@ resource "aws_network_acl" "eks_nacl" {
   #checkov:skip=CKV_AWS_229
   #checkov:skip=CKV_AWS_231
   #checkov:skip=CKV_AWS_230
-  vpc_id   = aws_vpc.vpc.id
+  vpc_id     = aws_vpc.vpc.id
   subnet_ids = aws_subnet.eks[*].id
   ingress {
     protocol   = -1
@@ -445,7 +445,7 @@ resource "aws_network_acl" "eks_nacl" {
     to_port    = 0
   }
   tags = merge(
-    {Name = "${var.vpc_name}-eks-nacl"},
+    { Name = "${var.vpc_name}-eks-nacl" },
     var.defaultTags,
     var.vpc_tags
   )
@@ -466,10 +466,10 @@ resource "aws_subnet" "database" {
   availability_zone       = length(regexall("^[a-z]{2}-", element(var.azs, count.index))) > 0 ? element(var.azs, count.index) : null
   map_public_ip_on_launch = false
   tags = merge(
-    {Name = format(
-        "${var.vpc_name}-database-%s",
-        element(var.azs, count.index),
-    )
+    { Name = format(
+      "${var.vpc_name}-database-%s",
+      element(var.azs, count.index),
+      )
     },
     var.defaultTags,
     var.vpc_tags
@@ -479,12 +479,12 @@ resource "aws_subnet" "database" {
   ]
 }
 
- #  Create database subnets route table
+#  Create database subnets route table
 resource "aws_route_table" "database_route_tb" {
-  count          = length(var.database_subnets) > 0 ? 1 : 0
-  vpc_id         = aws_vpc.vpc.id
+  count  = length(var.database_subnets) > 0 ? 1 : 0
+  vpc_id = aws_vpc.vpc.id
   tags = merge(
-    {Name = "${var.vpc_name}-database_rt"},
+    { Name = "${var.vpc_name}-database_rt" },
     var.defaultTags,
     var.vpc_tags
   )
@@ -495,9 +495,9 @@ resource "aws_route_table" "database_route_tb" {
 
 # Associate database subnets with route table
 resource "aws_route_table_association" "database_route_tb" {
-  count = length(var.database_subnets) > 0 ? length(var.database_subnets) : 0
-  subnet_id                = element(aws_subnet.database[*].id, count.index)
-  route_table_id           = aws_route_table.database_route_tb[0].id
+  count          = length(var.database_subnets) > 0 ? length(var.database_subnets) : 0
+  subnet_id      = element(aws_subnet.database[*].id, count.index)
+  route_table_id = aws_route_table.database_route_tb[0].id
   depends_on = [
     aws_route_table.database_route_tb
   ]
@@ -505,7 +505,7 @@ resource "aws_route_table_association" "database_route_tb" {
 
 # Create the db subnet VPC NACL
 resource "aws_network_acl" "db_nacl" {
-  vpc_id   = aws_vpc.vpc.id
+  vpc_id     = aws_vpc.vpc.id
   subnet_ids = aws_subnet.database[*].id
   ingress {
     protocol   = 6
@@ -540,7 +540,7 @@ resource "aws_network_acl" "db_nacl" {
     to_port    = 0
   }
   tags = merge(
-    {Name = "${var.vpc_name}-database-nacl"},
+    { Name = "${var.vpc_name}-database-nacl" },
     var.defaultTags,
     var.vpc_tags
   )
@@ -562,7 +562,7 @@ resource "aws_flow_log" "cw-flowlog" {
   traffic_type             = "ALL"
   vpc_id                   = aws_vpc.vpc.id
   tags = merge(
-    {Name = "${var.vpc_name}-cw-flowlog"},
+    { Name = "${var.vpc_name}-cw-flowlog" },
     var.defaultTags,
     var.vpc_tags
   )
@@ -578,7 +578,7 @@ resource "aws_kms_key" "cw-loggroup-key" {
   deletion_window_in_days = 7
   enable_key_rotation     = true
   policy                  = data.aws_iam_policy_document.cloudwatch_key_policy.json
-   tags = merge(
+  tags = merge(
     var.defaultTags,
     var.vpc_tags
   )
@@ -597,8 +597,8 @@ data "aws_iam_policy_document" "cloudwatch_key_policy" {
       type        = "AWS"
       identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
     }
-    actions       = ["kms:*"]
-    resources     = ["*"]
+    actions   = ["kms:*"]
+    resources = ["*"]
   }
   statement {
     principals {
@@ -614,11 +614,11 @@ data "aws_iam_policy_document" "cloudwatch_key_policy" {
     ]
     resources = ["*"]
     condition {
-      test    = "ArnEquals"
-      variable= "kms:EncryptionContext:aws:logs:arn"
-      values  = [
+      test     = "ArnEquals"
+      variable = "kms:EncryptionContext:aws:logs:arn"
+      values = [
         "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:*"
-        ]
+      ]
     }
   }
 }
@@ -653,7 +653,7 @@ resource "aws_iam_role" "fl-role" {
   count              = var.enable_flow_log ? 1 : 0
   name               = "${var.vpc_name}-flowlog-role"
   assume_role_policy = data.aws_iam_policy_document.cloudwatch_role_trust_policy.json
-tags = merge(
+  tags = merge(
     var.defaultTags,
     var.vpc_tags
   )
@@ -663,7 +663,7 @@ tags = merge(
 data "aws_iam_policy_document" "cloudwatch_role_trust_policy" {
   statement {
     principals {
-      type   = "Service"
+      type        = "Service"
       identifiers = ["vpc-flow-logs.amazonaws.com"]
     }
     actions = [
@@ -679,7 +679,7 @@ resource "aws_iam_policy" "fl-policy" {
   path        = "/"
   description = "cloudwatch policy for vpc flowlogs"
   policy      = data.aws_iam_policy_document.cloudwatch_role_policy[0].json
-tags = merge(
+  tags = merge(
     var.defaultTags,
     var.vpc_tags
   )
@@ -690,7 +690,7 @@ tags = merge(
 
 # Define FlowLog Role Policy
 data "aws_iam_policy_document" "cloudwatch_role_policy" {
-  count      = var.enable_flow_log ? 1 : 0
+  count = var.enable_flow_log ? 1 : 0
   statement {
     resources = ["${aws_cloudwatch_log_group.cw-flowlog-loggroup[0].arn}"]
     actions = [
@@ -714,7 +714,7 @@ resource "aws_iam_role_policy_attachment" "fl-policy-attach" {
 
 # Create FlowLog to S3 in the Security Audit Account (For immutability)
 resource "aws_flow_log" "s3-flowlog" {
-  count = var.enable_flow_log ? 1 : 0
+  count                = var.enable_flow_log ? 1 : 0
   log_destination      = "arn:aws:s3:::<orgname>-${data.aws_region.current.name}-flowlogs"
   log_destination_type = "s3"
   traffic_type         = "ALL"
@@ -770,7 +770,7 @@ resource "aws_vpc_peering_connection" "vpcx" {
     allow_remote_vpc_dns_resolution = true
   }
   tags = merge(
-    {Name = "${var.vpc_name}-vpcx-peering"},
+    { Name = "${var.vpc_name}-vpcx-peering" },
     var.defaultTags,
     var.vpc_tags
   )
@@ -778,10 +778,10 @@ resource "aws_vpc_peering_connection" "vpcx" {
 
 # Add route to both the private route tables
 resource "aws_route" "private_vpcx_rt" {
-  for_each                   = { for x in local.vpcx_routes : x.rtb_id => x.cidr }
-  route_table_id             = each.value.rtb_id
-  destination_cidr_block     = each.value.cidr
-  vpc_peering_connection_id  = aws_vpc_peering_connection.vpcx[0].id
+  for_each                  = { for x in local.vpcx_routes : x.rtb_id => x.cidr }
+  route_table_id            = each.value.rtb_id
+  destination_cidr_block    = each.value.cidr
+  vpc_peering_connection_id = aws_vpc_peering_connection.vpcx[0].id
   depends_on = [
     aws_route_table.private_route_tb,
     aws_vpc_peering_connection.vpcx
@@ -807,11 +807,11 @@ resource "aws_vpc_endpoint" "vpce" {
   vpc_endpoint_type   = lookup(each.value, "service_type", "Interface")
   auto_accept         = lookup(each.value, "auto_accept", null)
   security_group_ids  = lookup(each.value, "service_type", "Interface") == "Interface" ? distinct(concat(aws_security_group.vpce_sg.id, lookup(each.value, "security_group_ids", []))) : null
-  subnet_ids          = lookup(each.value, "service_type", "Interface") == "Interface" ? distinct(concat(aws_subnet.private[*].id, lookup(each.value, "private_subnets", []))) : null 
+  subnet_ids          = lookup(each.value, "service_type", "Interface") == "Interface" ? distinct(concat(aws_subnet.private[*].id, lookup(each.value, "private_subnets", []))) : null
   route_table_ids     = concat(aws_route_table.private_route_tb[*].id, aws_route_table.eks_route_tb[*].id)
   private_dns_enabled = lookup(each.value, "service_type", "Interface") == "Interface" ? lookup(each.value, "private_dns_enabled", null) : null
   tags = merge(
-    {Name = "${var.vpc_name}-${data.aws_vpc_endpoint_service.vpce[each.key].service_name}-vpce"},
+    { Name = "${var.vpc_name}-${data.aws_vpc_endpoint_service.vpce[each.key].service_name}-vpce" },
     var.defaultTags,
     var.vpc_tags
   )
@@ -819,9 +819,9 @@ resource "aws_vpc_endpoint" "vpce" {
 
 # Create Security Group for the VPC Endpoints
 resource "aws_security_group" "vpce_sg" {
-  vpc_id               = aws_vpc.vpc.id
-  name                 = "${var.vpc_name}-vpce-sg"
-  description          = "vpc endpoint sg for ${var.vpc_name}"
+  vpc_id      = aws_vpc.vpc.id
+  name        = "${var.vpc_name}-vpce-sg"
+  description = "vpc endpoint sg for ${var.vpc_name}"
   dynamic "ingress" {
     for_each = var.vpce_security_group_ingress
     content {
@@ -837,7 +837,7 @@ resource "aws_security_group" "vpce_sg" {
     }
   }
   tags = merge(
-    {Name = "${var.vpc_name}-vpce-sg"},
+    { Name = "${var.vpc_name}-vpce-sg" },
     var.defaultTags,
     var.vpc_tags
   )

@@ -5,7 +5,6 @@ variable "defaultTags" {
     owner       = "something"
     cost-centre = "something"
     contact     = "something"
-    tf_Managed  = "true"
-    repo        = "something"
+    tf_managed  = "true"
   }
 }

@@ -3,7 +3,7 @@ output "permission_sets" {
 }
 
 output "permission_sets_arn" {
-  value = {for k, ps in aws_ssoadmin_permission_set.permissions_set : k => ps.arn}
+  value = { for k, ps in aws_ssoadmin_permission_set.permissions_set : k => ps.arn }
 }
 
 output "assignments" {
