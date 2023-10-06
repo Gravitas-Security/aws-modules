@@ -12,3 +12,9 @@ variable "identitystore_group_depends_on" {
   type        = list(string)
   default     = []
 }
+
+variable "custom_tags" {
+  description = "Additional tags for the resource"
+  type        = map(string)
+  default     = {}
+}

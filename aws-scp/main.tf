@@ -6,6 +6,7 @@ resource "aws_organizations_policy" "org_scp" {
   description = each.value.description
   type = "SERVICE_CONTROL_POLICY"
   content = each.value.policy
+  tags_all = var.defaultTags
 }
 
 resource "aws_organizations_policy_attachment" "org_scp_attachment" {
