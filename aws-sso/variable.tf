@@ -4,6 +4,7 @@ variable "roles" {
   default = {
     session_duration = "PT2H"
     relay_state      = null
+    k8s_access       = false
   }
 }
 

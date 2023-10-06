@@ -50,10 +50,22 @@ resource "aws_ssoadmin_permission_set" "permissions_set" {
   )
 }
 
+data "aws_iam_policy_document" "eks_combined" {
+  for_each = var.roles
+  source_policy_documents = concat( 
+    [
+    data.aws_iam_policy_document.eks_access.json,
+    each.value.inline_policy
+  ]
+  )
+}
+
 resource "aws_ssoadmin_permission_set_inline_policy" "inline_policy" {
   for_each = var.roles
 
-  inline_policy      = each.value.inline_policy
+  inline_policy      =  each.value.k8s_access == true ? data.aws_iam_policy_document.eks_combined[each.key].json : each.value.inline_policy
+  # If var.k8s_access is true, merge the EKS access policy document with the inline policy
+  # Otherwise, use the inline policy as is
   instance_arn       = tolist(data.aws_ssoadmin_instances.sso-instance.arns)[0]
   permission_set_arn = aws_ssoadmin_permission_set.permissions_set[each.key].arn
   depends_on = [ 
