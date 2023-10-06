@@ -1,21 +1,21 @@
 variable "region" {
   description = "Region where the environment will be there"
-  type = string
-  default = "us-west-2"
+  type        = string
+  default     = "us-west-2"
 }
 
 # VPC variables
 
 variable "vpc_name" {
-    description = "Name of the VPC"
-    type = string
-    default = ""
+  description = "Name of the VPC"
+  type        = string
+  default     = ""
 }
 
 variable "vpc_cidr" {
-    description = "range of CIDR"
-    type = string
-    default = ""
+  description = "range of CIDR"
+  type        = string
+  default     = ""
 }
 
 variable "secondary_cidr_blocks" {
@@ -38,34 +38,34 @@ variable "vpc_tags" {
 
 # Subnet variables
 variable "azs" {
-    description = "AZs present in the VPC"
-    type = list(string)
-    default = ["us-west-2a", "us-west-2b"]
+  description = "AZs present in the VPC"
+  type        = list(string)
+  default     = ["us-west-2a", "us-west-2b"]
 
 }
 
 variable "private_subnets" {
-    description = "CIDR range for private subnets"
-    type = list(string)
-    default = [""]
+  description = "CIDR range for private subnets"
+  type        = list(string)
+  default     = [""]
 }
 
 variable "public_subnets" {
-    description = "CIDR range for public subnets"
-    type = list(string)
-    default = [""]
+  description = "CIDR range for public subnets"
+  type        = list(string)
+  default     = [""]
 }
 
 variable "eks_subnets" {
-    description = "CIDR range for eks subnets"
-    type = list(string)
-    default = [""]
+  description = "CIDR range for eks subnets"
+  type        = list(string)
+  default     = [""]
 }
 
 variable "database_subnets" {
-    description = "CIDR range for database subnets"
-    type = list(string)
-    default = [""]
+  description = "CIDR range for database subnets"
+  type        = list(string)
+  default     = [""]
 }
 
 # NatGW variables
@@ -110,8 +110,8 @@ variable "transit_gateway_id" {
 
 variable "transit_gateway_routes" {
   description = "The list of networks to route over the TGW"
-  type       = list(string)
-  default    = []
+  type        = list(string)
+  default     = []
 }
 
 # VPC peering attachment variables
@@ -129,8 +129,8 @@ variable "peered_vpc" {
 
 variable "vpc_peering_routes" {
   description = "The list of networks to route over the TGW"
-  type       = list(string)
-  default    = []
+  type        = list(string)
+  default     = []
 }
 
 # VPC endpoints variables

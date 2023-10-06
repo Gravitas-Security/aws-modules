@@ -1,6 +1,6 @@
 variable "roles" {
   description = "Roles to be deployed into organizational accounts"
-  type = any
+  type        = any
   default = {
     session_duration = "PT2H"
     relay_state      = null
