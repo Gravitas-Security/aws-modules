@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/CyberViking949/aws-modules/compare/v1.2.0...v1.3.0) (2023-10-06)
+
+
+### Features
+
+* adding updates ([7ca7783](https://github.com/CyberViking949/aws-modules/commit/7ca778327f3c4f3e9f56935abd7fa0148b4a1951))
+
 ## [1.2.0](https://github.com/CyberViking949/aws-modules/compare/v1.1.0...v1.2.0) (2023-10-04)
 
 
