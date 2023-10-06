@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.0](https://github.com/CyberViking949/aws-modules/compare/v1.3.0...v1.4.0) (2023-10-06)
+
+
+### Features
+
+* adding k8s access policy as a attribute bool ([6f4b132](https://github.com/CyberViking949/aws-modules/commit/6f4b1324599565456bb8e9868e53f39470a39c75))
+
+
+### Bug Fixes
+
+* updating tags ([2ff746c](https://github.com/CyberViking949/aws-modules/commit/2ff746c18381e626c50a91b86fdbe6b4d96a7a26))
+
 ## [1.3.0](https://github.com/CyberViking949/aws-modules/compare/v1.2.0...v1.3.0) (2023-10-06)
 
 
