@@ -108,7 +108,7 @@ resource "aws_ssoadmin_account_assignment" "acct-assignment" {
   principal_id       = local.groups[each.value.name]
   principal_type     = "GROUP"
 
-  target_id   = each.key
+  target_id   = each.key == "global" ? local.global_accounts : each.key
   target_type = "AWS_ACCOUNT"
   depends_on = [
     aws_ssoadmin_permission_set.permissions_set,
