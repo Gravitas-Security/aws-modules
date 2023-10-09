@@ -74,10 +74,10 @@ resource "aws_ssoadmin_permission_set_inline_policy" "inline_policy" {
 }
 
 resource "aws_ssoadmin_managed_policy_attachment" "policy-attachment" {
-  for_each = { for ps in local.ps_policy_maps : "${ps.policy_arn}_${ps.name}" => ps }
+  for_each = { for ps in local.ps_policy_maps : "${ps.name}_${ps.policy_arn}" => ps }
 
   instance_arn       = tolist(data.aws_ssoadmin_instances.sso-instance.arns)[0]
-  managed_policy_arn = trimsuffix(each.key, "_${each.value.name}")
+  managed_policy_arn = format("arn:aws:iam::aws:policy/%s", split("_", each.key)[1])
   permission_set_arn = aws_ssoadmin_permission_set.permissions_set[each.value.name].arn
 }
 

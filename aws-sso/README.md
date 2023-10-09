@@ -42,10 +42,8 @@ AWS SSO Permission sets is a combination of a Role and a policy which can be app
 
 ### Permission ste configs
 
-- creates azuread group with name <aws-role-<role_name>>
-- assigns azuread group to AWS SSO app
 - attachment of AWS Managed Policies
-- binds to identity_store group with name "aws-role-<role_name>" (SCIM required for azuread group push to identity_store)
+- binds to identity_store group with name "aws-role-<role_name>"
 - creates inline policy defined in data source
 - supports multiple attachment states
   - "global": attaches to every account in org. queried dynamically in module
