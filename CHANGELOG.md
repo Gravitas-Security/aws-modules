@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/CyberViking949/aws-modules/compare/v1.6.0...v1.7.0) (2023-10-09)
+
+
+### Features
+
+* adding global operator ([5c92610](https://github.com/CyberViking949/aws-modules/commit/5c9261065146de4d07d0ef2a97a97a58cfd74db5))
+
 ## [1.6.0](https://github.com/CyberViking949/aws-modules/compare/v1.5.0...v1.6.0) (2023-10-09)
 
 
