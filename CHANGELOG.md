@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/CyberViking949/aws-modules/compare/v1.8.0...v1.9.0) (2023-10-09)
+
+
+### Features
+
+* fixing naming conventions ([59c82ff](https://github.com/CyberViking949/aws-modules/commit/59c82ff60dd0ebdd57d5101c792bed659f3ffaf3))
+
 ## [1.8.0](https://github.com/CyberViking949/aws-modules/compare/v1.7.0...v1.8.0) (2023-10-09)
 
 
