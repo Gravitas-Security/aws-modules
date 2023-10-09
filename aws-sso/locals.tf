@@ -23,5 +23,5 @@ locals {
   ])
   identity_store_id = tolist(data.aws_ssoadmin_instances.sso-instance.identity_store_ids)[0]
 
-  #org_accounts = data.aws_organizations_organization.org.accounts[*].id
+global_accounts = data.aws_organizations_organization.org.accounts[*].id
 }
