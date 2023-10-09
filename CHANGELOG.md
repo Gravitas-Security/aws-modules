@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.6.0](https://github.com/CyberViking949/aws-modules/compare/v1.5.0...v1.6.0) (2023-10-09)
+
+
+### Features
+
+* adding global selector for assignments ([643158e](https://github.com/CyberViking949/aws-modules/commit/643158e73681caaf6c4f1d4221ee1b7737a70d43))
+* updating configs ([5bc7f2b](https://github.com/CyberViking949/aws-modules/commit/5bc7f2b0028e00475d79af3cf98bc57eb9742479))
+
+
+### Bug Fixes
+
+* policy_attachment ([3e55842](https://github.com/CyberViking949/aws-modules/commit/3e55842a30903f0e62646524b22aa66e8f34cbeb))
+
 ## [1.5.0](https://github.com/CyberViking949/aws-modules/compare/v1.4.0...v1.5.0) (2023-10-06)
 
 
