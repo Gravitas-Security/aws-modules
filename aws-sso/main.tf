@@ -102,13 +102,13 @@ data "aws_identitystore_group" "id_store" {
 }
 
 resource "aws_ssoadmin_account_assignment" "acct-assignment" {
-  for_each           = { for act in local.assignment_map : "${scp.name}_${act.target_id}" => act }
+  for_each           = { for act in local.assignment_map : "${act.name}_${act.target_id}" => act }
   instance_arn       = tolist(data.aws_ssoadmin_instances.sso-instance.arns)[0]
   permission_set_arn = aws_ssoadmin_permission_set.permissions_set[each.value.name].arn
   principal_id       = local.groups[each.value.name]
   principal_type     = "GROUP"
 
-  target_id   = split("_", each.key[1])
+  target_id   = replace(each.key, "${each.value.name}_", "")
   target_type = "AWS_ACCOUNT"
   depends_on = [
     aws_ssoadmin_permission_set.permissions_set,
