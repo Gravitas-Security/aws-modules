@@ -4,7 +4,7 @@ module "sso" {
     SecurityAdmin = {
       description = "Provides full access to AWS services and resources."
       managed_policies = [
-        "arn:aws:iam::aws:policy/AdministratorAccess"
+        "AdministratorAccess"
       ]
       assignments = [
         "global"
@@ -14,11 +14,11 @@ module "sso" {
     DevTeam = {
       description = "Provides full access to AWS services and resources."
       managed_policies = [
-        "arn:aws:iam::aws:policy/AdministratorAccess"
+        "AdministratorAccess"
       ]
       assignments = [
-        "808696518247",
-        "047640678298"
+        "123456789123",
+        "987654321987"
       ]
       inline_policy = data.aws_iam_policy_document.security-admin-policy.json
     }

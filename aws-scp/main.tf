@@ -10,7 +10,7 @@ resource "aws_organizations_policy" "org_scp" {
 }
 
 resource "aws_organizations_policy_attachment" "org_scp_attachment" {
-  for_each  = { for scp in local.attachment_map : "${scp.target_id}_${scp.name}" => scp }
+  for_each  = { for scp in local.attachment_map : "${scp.name}_${scp.target_id}" => scp }
   policy_id = aws_organizations_policy.org_scp[each.value.name].id
-  target_id = trimsuffix(each.key, "_${each.value.name}")
+  target_id = replace(each.key, "${each.value.name}_", "")
 }
