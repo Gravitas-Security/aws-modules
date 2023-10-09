@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/CyberViking949/aws-modules/compare/v1.7.0...v1.8.0) (2023-10-09)
+
+
+### Features
+
+* making arns dynamicly added ([8a07eb0](https://github.com/CyberViking949/aws-modules/commit/8a07eb08e004c9a9d550fe9ef5d933bb013d4544))
+
 ## [1.7.0](https://github.com/CyberViking949/aws-modules/compare/v1.6.0...v1.7.0) (2023-10-09)
 
 
