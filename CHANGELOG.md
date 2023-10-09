@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/CyberViking949/aws-modules/compare/v1.9.0...v1.10.0) (2023-10-09)
+
+
+### Features
+
+* fixing sso ([7b3fa55](https://github.com/CyberViking949/aws-modules/commit/7b3fa5588dfc3a2c689dc1ee1e7c11b9b9c5ba38))
+
 ## [1.9.0](https://github.com/CyberViking949/aws-modules/compare/v1.8.0...v1.9.0) (2023-10-09)
 
 
