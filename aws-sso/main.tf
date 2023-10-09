@@ -74,10 +74,10 @@ resource "aws_ssoadmin_permission_set_inline_policy" "inline_policy" {
 }
 
 resource "aws_ssoadmin_managed_policy_attachment" "policy-attachment" {
-  for_each = { for ps in local.ps_policy_maps : "${ps.policy_arn}" => ps }
+  for_each = { for ps in local.ps_policy_maps : "${ps.policy_arn}_${ps.name}" => ps }
 
   instance_arn       = tolist(data.aws_ssoadmin_instances.sso-instance.arns)[0]
-  managed_policy_arn = each.key
+  managed_policy_arn = trimsuffix(each.key, "_${each.value.name}")
   permission_set_arn = aws_ssoadmin_permission_set.permissions_set[each.value.name].arn
 }
 
@@ -102,13 +102,13 @@ data "aws_identitystore_group" "id_store" {
 }
 
 resource "aws_ssoadmin_account_assignment" "acct-assignment" {
-  for_each           = { for act in local.assignment_map : "${act.target_id}" => act }
+  for_each           = { for act in local.assignment_map : "${act.target_id}_${act.name}" => act }
   instance_arn       = tolist(data.aws_ssoadmin_instances.sso-instance.arns)[0]
   permission_set_arn = aws_ssoadmin_permission_set.permissions_set[each.value.name].arn
   principal_id       = local.groups[each.value.name]
   principal_type     = "GROUP"
 
-  target_id   = each.key == "global" ? local.global_accounts : each.key
+  target_id   = trimsuffix(each.key, "_${each.value.name}")
   target_type = "AWS_ACCOUNT"
   depends_on = [
     aws_ssoadmin_permission_set.permissions_set,
