@@ -6,5 +6,6 @@ variable "defaultTags" {
     cost-centre = "something"
     contact     = "something"
     tf_managed  = "true"
+    tf_module   = "github.com/cyberviking949/aws-modules/aws-sso"
   }
 }
