@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/CyberViking949/aws-modules/compare/v1.10.0...v1.11.0) (2023-10-12)
+
+
+### Features
+
+* Adding IAM module and tags ([0fadbe8](https://github.com/CyberViking949/aws-modules/commit/0fadbe8007c2eb52b396360bdd61cde7b4aae611))
+
 ## [1.10.0](https://github.com/CyberViking949/aws-modules/compare/v1.9.0...v1.10.0) (2023-10-09)
 
 
