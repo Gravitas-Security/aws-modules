@@ -13,6 +13,7 @@ locals {
     ]
   ])
 
+  # Create name and account assignment maps list
   assignment_map = flatten([
     for name, attrs in local.acct_assignments : [
       for account in attrs.assignments : {
