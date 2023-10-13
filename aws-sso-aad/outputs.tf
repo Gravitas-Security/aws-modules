@@ -19,7 +19,7 @@ output "non_master_accounts" {
 }
 
 output "azuread_groups" {
-  value = data.azuread_groups.aad_groups
+  value = azuread_groups.aad_groups
 }
 
 output "azuread_application" {
@@ -31,5 +31,21 @@ output "azuread_service_principal" {
 }
 
 output "azuread_app_assignments" {
-  value = data.azuread_app_role_assignment.group_assignment
+  value = azuread_app_role_assignment.group_assignment
+}
+
+output "admin_permission_set" {
+  value = data.aws_ssoadmin_permission_set.admin_permission_sets
+}
+
+output "admin_permission_sets_arn" {
+  value = { for k, ps in data.aws_ssoadmin_permission_set.admin_permission_sets : k => ps.arn }
+}
+
+output "admin_assignments" {
+  value = aws_ssoadmin_account_assignment.admin_acct_assignment
+}
+
+output "admin_azuread_group" {
+  value = azuread_group.aad_admin_group
 }
