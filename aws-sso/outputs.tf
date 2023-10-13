@@ -14,10 +14,6 @@ output "admin_permission_set" {
   value = data.aws_ssoadmin_permission_set.admin_permission_sets
 }
 
-output "admin_permission_sets_arn" {
-  value = { for k, ps in data.aws_ssoadmin_permission_set.admin_permission_sets : k => ps.arn }
-}
-
 output "admin_assignments" {
   value = aws_ssoadmin_account_assignment.admin_acct_assignment
 }
