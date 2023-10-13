@@ -69,7 +69,7 @@ resource "aws_ssoadmin_permission_set_inline_policy" "inline_policy" {
   for_each = var.roles
 
   # If var.k8s_access is true, merge the EKS access policy document with the inline policy. Otherwise, use the inline policy as is
-  inline_policy = each.value.k8s_access == true ? data.aws_iam_policy_document.eks_combined[each.key].json : each.value.inline_policy
+  inline_policy      = each.value.k8s_access == true ? data.aws_iam_policy_document.eks_combined[each.key].json : each.value.inline_policy
   instance_arn       = tolist(data.aws_ssoadmin_instances.sso-instance.arns)[0]
   permission_set_arn = aws_ssoadmin_permission_set.permissions_set[each.key].arn
   depends_on = [
@@ -84,7 +84,7 @@ resource "aws_ssoadmin_managed_policy_attachment" "policy-attachment" {
   instance_arn       = tolist(data.aws_ssoadmin_instances.sso-instance.arns)[0]
   managed_policy_arn = format("arn:aws:iam::aws:policy/%s", split("_", each.key)[1])
   permission_set_arn = aws_ssoadmin_permission_set.permissions_set[each.value.name].arn
-  depends_on = [ aws_ssoadmin_permission_set.permissions_set ]
+  depends_on         = [aws_ssoadmin_permission_set.permissions_set]
 }
 
 resource "null_resource" "dependency" {

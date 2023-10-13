@@ -1,4 +1,4 @@
-variable "policies" {
+variable "tag_policies" {
   type = map(object({
     description = string
     policy      = string

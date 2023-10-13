@@ -3,7 +3,7 @@ data "aws_organizations_organization" "org" {}
 
 # Create AWS Service Control Policy
 resource "aws_organizations_policy" "org_tp" {
-  for_each    = var.policies
+  for_each    = var.tag_policies
   name        = each.key
   description = each.value.description
   type        = "TAG_POLICY"
