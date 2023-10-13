@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.12.0](https://github.com/CyberViking949/aws-modules/compare/v1.11.0...v1.12.0) (2023-10-13)
+
+
+### Features
+
+* adding tagging policy module ([7650da5](https://github.com/CyberViking949/aws-modules/commit/7650da574df57ca419e0c10af0238ab00dedf11e))
+* moving tags to downstream ([5768f98](https://github.com/CyberViking949/aws-modules/commit/5768f9892dd337409c7e9937731bb2a95e333073))
+
 ## [1.11.0](https://github.com/CyberViking949/aws-modules/compare/v1.10.0...v1.11.0) (2023-10-12)
 
 
