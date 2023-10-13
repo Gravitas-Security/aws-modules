@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.1](https://github.com/CyberViking949/aws-modules/compare/v1.12.0...v1.12.1) (2023-10-13)
+
+
+### Bug Fixes
+
+* removing broken output ([5a71982](https://github.com/CyberViking949/aws-modules/commit/5a719824d5cf02679ae2fb1c4ea0d12632ebc0f3))
+
 ## [1.12.0](https://github.com/CyberViking949/aws-modules/compare/v1.11.0...v1.12.0) (2023-10-13)
 
 
