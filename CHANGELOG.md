@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/CyberViking949/aws-modules/compare/v2.0.0...v2.1.0) (2023-10-13)
+
+
+### Features
+
+* moving scps to json, adding validation ([f82db38](https://github.com/CyberViking949/aws-modules/commit/f82db3865f6b6172d84077651cb755073cc44f74))
+
 ## [2.0.0](https://github.com/CyberViking949/aws-modules/compare/v1.12.1...v2.0.0) (2023-10-13)
 
 
