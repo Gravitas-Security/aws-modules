@@ -51,13 +51,18 @@ resource "aws_organizations_account" "accounts" {
   }
 }
 
+data "aws_iam_policy_document" "policy_validation" {
+  for_each = var.policies
+  source_policy_documents = [file("policies/${each.key}.json")]
+}
+
 # Create AWS Service Control Policy
 resource "aws_organizations_policy" "org_scp" {
   for_each    = var.policies
   name        = each.key
   description = each.value.description
   type        = "SERVICE_CONTROL_POLICY"
-  content     = each.value.policy
+  content     = data.aws_iam_policy_document.policy_validation[each.key].json
   tags = merge(
     var.defaultTags,
     var.custom_tags
@@ -69,16 +74,16 @@ resource "aws_organizations_policy" "org_scp" {
 resource "aws_organizations_policy_attachment" "org_scp_attachment" {
   for_each  = { for scp in local.scp_attachment_map : "${scp.name}_${scp.target_id}" => scp }
   policy_id = aws_organizations_policy.org_scp[each.value.name].id
-  target_id = each.value.target_id == "root" ? aws_organizations_organization.org.roots[0].id : aws_organizations_organizational_unit.org_ous[each.value.target_id].id
+  target_id = each.value.target_id == "root" ? aws_organizations_organization.org.roots[0].id : each.value.target_id == can(regex("^[0-9]", each.value.target_id)) ? aws_organizations_account.accounts[each.value.target_id].id : aws_organizations_organizational_unit.org_ous[each.value.target_id].id
 }
 
-# Create AWS Service Control Policy
+# Create AWS Tag Policy
 resource "aws_organizations_policy" "org_tp" {
   for_each    = var.tag_policies
   name        = each.key
   description = each.value.description
   type        = "TAG_POLICY"
-  content     = file("tag_policies/${each.value.policy}")
+  content     = file("tag_policies/${each.key}.json")
   tags = merge(
     var.defaultTags,
     var.custom_tags
