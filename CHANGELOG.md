@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.0.0](https://github.com/CyberViking949/aws-modules/compare/v1.12.1...v2.0.0) (2023-10-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* removing tp module
+* refactor scps module to org module
+
+### Features
+
+* refactor scps module to org module ([b83e04b](https://github.com/CyberViking949/aws-modules/commit/b83e04bc57ab60e420f8152dba7d20e84df4375d))
+* removing tp module ([d4161d4](https://github.com/CyberViking949/aws-modules/commit/d4161d4ed247b1ace032cd461a2f4642692b92b5))
+
 ## [1.12.1](https://github.com/CyberViking949/aws-modules/compare/v1.12.0...v1.12.1) (2023-10-13)
 
 
