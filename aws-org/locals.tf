@@ -1,4 +1,15 @@
 locals {
+
+  delegated_services = { for act_name, act_attrs in var.delegated_admins : act_name => act_attrs if can(act_attrs.services) }
+  del_services_map = flatten([
+    for name, attrs in local.delegated_services : [
+      for service in attrs.services : {
+        name              = name
+        service_principal = service
+      } if can(attrs.services)
+    ]
+  ])
+
   scp_attachments = { for scp_name, scp_attrs in var.policies : scp_name => scp_attrs if can(scp_attrs.attachments) }
   scp_attachment_map = flatten([
     for name, attrs in local.scp_attachments : [

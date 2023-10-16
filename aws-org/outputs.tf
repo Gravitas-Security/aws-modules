@@ -29,3 +29,7 @@ output "aws_tp" {
 output "tp_attachment" {
   value = aws_organizations_policy_attachment.org_tp_attachment[*]
 }
+
+output "delegated_admins" {
+  value = aws_organizations_delegated_administrator.delegated_admin[*]
+}
