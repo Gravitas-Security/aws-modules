@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/CyberViking949/aws-modules/compare/v2.1.0...v2.2.0) (2023-10-16)
+
+
+### Features
+
+* adding delegated_admin capabilities ([91c0c3a](https://github.com/CyberViking949/aws-modules/commit/91c0c3abf60925bfa092095f6788a638adc9c23e))
+
 ## [2.1.0](https://github.com/CyberViking949/aws-modules/compare/v2.0.0...v2.1.0) (2023-10-13)
 
 
