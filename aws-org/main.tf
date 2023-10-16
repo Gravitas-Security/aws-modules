@@ -12,7 +12,16 @@ resource "aws_organizations_organization" "org" {
     "ssm.amazonaws.com",
     "sso.amazonaws.com",
     "tagpolicies.tag.amazonaws.com",
-    "ipam.amazonaws.com"
+    "ipam.amazonaws.com",
+    "detective.amazonaws.com",
+    "auditmanager.amazonaws.com",
+    "fms.amazonaws.com",
+    "guardduty.amazonaws.com",
+    "securitylake.amazonaws.com",
+    "securityhub.amazonaws.com",
+    "macie.amazonaws.com",
+    "inspector2.amazonaws.com",
+    "access-analyzer.amazonaws.com"
   ]
 }
 
@@ -51,8 +60,15 @@ resource "aws_organizations_account" "accounts" {
   }
 }
 
+resource "aws_organizations_delegated_administrator" "delegated_admin" {
+  for_each = { for act in local.del_services_map : "${act.name}-${act.service_principal}" => act }
+  account_id = aws_organizations_account.accounts[each.value.name].id
+  service_principal = "${each.value.service_principal}.amazonaws.com"
+  depends_on = [aws_organizations_account.accounts]
+}
+
 data "aws_iam_policy_document" "policy_validation" {
-  for_each = var.policies
+  for_each                = var.policies
   source_policy_documents = [file("policies/${each.key}.json")]
 }
 

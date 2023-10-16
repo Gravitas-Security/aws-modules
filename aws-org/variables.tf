@@ -17,6 +17,13 @@ variable "ous" {
   default = {}
 }
 
+variable "delegated_admins" {
+  type = map(object({
+    services         = list(string)
+  }))
+  default = {}
+}
+
 variable "policies" {
   type = map(object({
     description = string

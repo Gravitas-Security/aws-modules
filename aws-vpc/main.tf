@@ -86,8 +86,8 @@ resource "aws_internet_gateway" "igw" {
 
 # Create N # of Elastip Ip's for the NatGW's below
 resource "aws_eip" "nat" {
-  count  = local.nat_gateway_count
-  domain = "vpc"
+  count = local.nat_gateway_count
+  domain   = "vpc"
   tags = merge(
     {
       "Name" = format(
