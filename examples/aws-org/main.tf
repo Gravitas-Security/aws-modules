@@ -20,6 +20,22 @@ module "aws-org" {
     }
   }
 
+  delegated_admins = {
+    "security" = {
+      services = [
+        "access-analyzer",
+        "cloudtrail",
+        "auditmanager"
+      ]
+    }
+    "ops" = {
+      services = [
+        "ssm",
+        "account"
+      ]
+    }
+  }
+
 
   policies = {
     deny-root-user = {
