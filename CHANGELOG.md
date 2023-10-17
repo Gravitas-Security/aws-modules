@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.1](https://github.com/CyberViking949/aws-modules/compare/v2.3.0...v2.3.1) (2023-10-17)
+
+
+### Bug Fixes
+
+* remove cloudwatch service principal ([c7b36e6](https://github.com/CyberViking949/aws-modules/commit/c7b36e6ed3e6b72c5643619a457c2b0b8bbc9ee9))
+
 ## [2.3.0](https://github.com/CyberViking949/aws-modules/compare/v2.2.0...v2.3.0) (2023-10-17)
 
 
