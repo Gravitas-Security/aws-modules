@@ -24,8 +24,7 @@ resource "aws_organizations_organization" "org" {
     "access-analyzer.amazonaws.com",
     "stacksets.cloudformation.amazonaws.com",
     "ram.amazonaws.com",
-    "servicecatalog.amazonaws.com",
-    "cloudwatch-crossaccount.amazonaws.com"
+    "servicecatalog.amazonaws.com"
   ]
 }
 
