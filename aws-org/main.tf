@@ -21,9 +21,15 @@ resource "aws_organizations_organization" "org" {
     "securityhub.amazonaws.com",
     "macie.amazonaws.com",
     "inspector2.amazonaws.com",
-    "access-analyzer.amazonaws.com"
+    "access-analyzer.amazonaws.com",
+    "stacksets.cloudformation.amazonaws.com",
+    "ram.amazonaws.com",
+    "servicecatalog.amazonaws.com",
+    "cloudwatch-crossaccount.amazonaws.com"
   ]
 }
+
+resource "aws_ram_sharing_with_organization" "org_share" {}
 
 # Create AWS Organization OU's
 resource "aws_organizations_organizational_unit" "org_ous" {

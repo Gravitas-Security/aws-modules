@@ -33,3 +33,7 @@ output "tp_attachment" {
 output "delegated_admins" {
   value = aws_organizations_delegated_administrator.delegated_admin[*]
 }
+
+output "org_sharing" {
+  value = aws_ram_sharing_with_organization.org_share
+}
