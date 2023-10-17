@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.2](https://github.com/CyberViking949/aws-modules/compare/v2.3.1...v2.3.2) (2023-10-17)
+
+
+### Bug Fixes
+
+* removing stacksets ([ae1bc04](https://github.com/CyberViking949/aws-modules/commit/ae1bc04803ae40e2c90f3fa3f001005097077950))
+
 ## [2.3.1](https://github.com/CyberViking949/aws-modules/compare/v2.3.0...v2.3.1) (2023-10-17)
 
 
