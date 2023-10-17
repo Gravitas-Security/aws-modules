@@ -22,7 +22,6 @@ resource "aws_organizations_organization" "org" {
     "macie.amazonaws.com",
     "inspector2.amazonaws.com",
     "access-analyzer.amazonaws.com",
-    "stacksets.cloudformation.amazonaws.com",
     "ram.amazonaws.com",
     "servicecatalog.amazonaws.com"
   ]
