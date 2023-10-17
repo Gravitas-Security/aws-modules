@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0](https://github.com/CyberViking949/aws-modules/compare/v2.2.0...v2.3.0) (2023-10-17)
+
+
+### Features
+
+* Adding RAM to org ([776500b](https://github.com/CyberViking949/aws-modules/commit/776500bed0922c6084f687d52cd1730efab14f15))
+
 ## [2.2.0](https://github.com/CyberViking949/aws-modules/compare/v2.1.0...v2.2.0) (2023-10-16)
 
 
