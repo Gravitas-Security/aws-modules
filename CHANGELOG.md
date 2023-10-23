@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.2](https://github.com/Gravitas-Security/aws-modules/compare/v2.5.1...v2.5.2) (2023-10-23)
+
+
+### Bug Fixes
+
+* fixing dependancies ([c0c5be7](https://github.com/Gravitas-Security/aws-modules/commit/c0c5be76974aa097cbf6e366eb6240cdc27cf857))
+
 ## [2.5.1](https://github.com/Gravitas-Security/aws-modules/compare/v2.5.0...v2.5.1) (2023-10-23)
 
 
