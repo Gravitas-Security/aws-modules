@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.0](https://github.com/Gravitas-Security/aws-modules/compare/v2.3.2...v2.4.0) (2023-10-23)
+
+
+### Features
+
+* Updating aws-sso-aad ([04b76bf](https://github.com/Gravitas-Security/aws-modules/commit/04b76bfc4d65d275c49983fd64e17185abb9b62e))
+
 ## [2.3.2](https://github.com/CyberViking949/aws-modules/compare/v2.3.1...v2.3.2) (2023-10-17)
 
 
