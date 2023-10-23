@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.0](https://github.com/Gravitas-Security/aws-modules/compare/v2.4.0...v2.5.0) (2023-10-23)
+
+
+### Features
+
+* adding sso module for jumpcloud idp ([7c9a957](https://github.com/Gravitas-Security/aws-modules/commit/7c9a957da4c5b6df5aa9e9a9745ade3cfbabc65a))
+
 ## [2.4.0](https://github.com/Gravitas-Security/aws-modules/compare/v2.3.2...v2.4.0) (2023-10-23)
 
 
