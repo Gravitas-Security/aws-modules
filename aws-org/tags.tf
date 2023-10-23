@@ -3,6 +3,6 @@ variable "defaultTags" {
   type        = map(string)
   default = {
     tf_Managed = "true"
-    tf_module  = "github.com/cyberviking949/aws-modules/aws-scp"
+    tf_module  = "github.com/Gravitas-Security/aws-modules/aws-scp"
   }
 }

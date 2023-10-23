@@ -3,6 +3,6 @@ variable "defaultTags" {
   type        = map(string)
   default = {
     tf_managed = "true"
-    tf_module  = "github.com/cyberviking949/aws-modules/aws-sso"
+    tf_module  = "github.com/Gravitas-Security/aws-modules/aws-sso"
   }
 }
