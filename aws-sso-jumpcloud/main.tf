@@ -39,7 +39,10 @@ resource "jumpcloud_user_group_association" "user_group_association" {
 }
 
 resource "time_sleep" "wait_5_seconds" {
-  depends_on = [null_resource.dependency]
+  depends_on = [
+    jumpcloud_user_group_association.user_group_association,
+    jumpcloud_user_group_association.admin_group_association
+  ]
 
   create_duration = "5s"
 }
@@ -60,9 +63,7 @@ data "aws_identitystore_group" "id_store_admin" {
       attribute_value = jumpcloud_user_group.admin_role_group.name
     }
   }
-  depends_on = [ 
-    jumpcloud_user_group_association.admin_group_association,
-    time_sleep.wait_5_seconds ]
+  depends_on = [ time_sleep.wait_5_seconds ]
 }
 
 ## Get the default AdministratorAccess permissionset
@@ -138,12 +139,6 @@ resource "aws_ssoadmin_managed_policy_attachment" "policy-attachment" {
   depends_on         = [aws_ssoadmin_permission_set.permissions_set]
 }
 
-resource "null_resource" "dependency" {
-  triggers = {
-    dependency_id = join(",", var.identitystore_group_depends_on)
-  }
-}
-
 ## Get identity store group for use in assigning roles (must be created via SCIM prior)
 data "aws_identitystore_group" "id_store" {
   for_each          = var.roles
@@ -156,10 +151,7 @@ data "aws_identitystore_group" "id_store" {
     }
   }
 
-  depends_on = [
-    null_resource.dependency,
-    jumpcloud_user_group_association.user_group_association
-    ]
+  depends_on = [ time_sleep.wait_5_seconds ]
 }
 
 ## Assign the identity store group to permission set. Assign permission set to defined account(s)
