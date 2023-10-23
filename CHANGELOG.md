@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.1](https://github.com/Gravitas-Security/aws-modules/compare/v2.5.0...v2.5.1) (2023-10-23)
+
+
+### Bug Fixes
+
+* fixing idstore dependancy ([ca0990d](https://github.com/Gravitas-Security/aws-modules/commit/ca0990dae5e0d0ca6fecd1d9af57d0e3791cb932))
+
 ## [2.5.0](https://github.com/Gravitas-Security/aws-modules/compare/v2.4.0...v2.5.0) (2023-10-23)
 
 
