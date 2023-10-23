@@ -156,7 +156,10 @@ data "aws_identitystore_group" "id_store" {
     }
   }
 
-  depends_on = [null_resource.dependency]
+  depends_on = [
+    null_resource.dependency,
+    jumpcloud_user_group_association.user_group_association
+    ]
 }
 
 ## Assign the identity store group to permission set. Assign permission set to defined account(s)
