@@ -24,13 +24,13 @@ data "azuread_application" "aws_sso" {
 
 # Import the AWS SSO Azure Service Principal
 data "azuread_service_principal" "aws_sso" {
-  application_id = data.azuread_application.aws_sso.application_id
+  display_name = data.azuread_application.aws_sso.display_name
 }
 
 ## Assign the AdministratorAccess group to the AdministratorAccess role
 resource "azuread_app_role_assignment" "admin_group_assignment" {
   for_each            = azuread_group.aad_admin_group
-  app_role_id         = azuread_service_principal.aws_sso.app_role_ids["User"]
+  app_role_id         = data.azuread_service_principal.aws_sso.app_role_ids["User"]
   principal_object_id = azuread_group.aad_groups[each.key].object_id
   resource_object_id  = data.azuread_service_principal.aws_sso.object_id
   depends_on = [
@@ -42,7 +42,7 @@ resource "azuread_app_role_assignment" "admin_group_assignment" {
 ## Assign the AzureAD groups to the AWS SSO Application
 resource "azuread_app_role_assignment" "group_assignment" {
   for_each            = azuread_group.aad_groups
-  app_role_id         = azuread_service_principal.aws_sso.app_role_ids["User"]
+  app_role_id         = data.azuread_service_principal.aws_sso.app_role_ids["User"]
   principal_object_id = azuread_group.aad_groups[each.key].object_id
   resource_object_id  = data.azuread_service_principal.aws_sso.object_id
   depends_on = [
@@ -136,10 +136,10 @@ resource "aws_ssoadmin_permission_set_inline_policy" "inline_policy" {
 
 ## Create a managed policy attachment for each managed policy in the roles map
 resource "aws_ssoadmin_managed_policy_attachment" "policy-attachment" {
-  for_each = { for ps in local.ps_policy_maps : "${ps.policy_arn}_${ps.name}" => ps }
+  for_each = { for ps in local.ps_policy_maps : "${ps.name}_${ps.policy_arn}" => ps }
 
   instance_arn       = tolist(data.aws_ssoadmin_instances.sso-instance.arns)[0]
-  managed_policy_arn = trimsuffix(each.key, "_${each.value.name}")
+  managed_policy_arn = format("arn:aws:iam::aws:policy/%s", split("_", each.key)[1])
   permission_set_arn = aws_ssoadmin_permission_set.permissions_set[each.value.name].arn
   depends_on         = [aws_ssoadmin_permission_set.permissions_set]
 }
@@ -167,13 +167,13 @@ data "aws_identitystore_group" "id_store" {
 
 ## Create an account assignment for each account in the roles map and assign the identity store group to permission set
 resource "aws_ssoadmin_account_assignment" "acct-assignment" {
-  for_each           = { for act in local.assignment_map : "${act.target_id}_${act.name}" => act }
+  for_each           = { for act in local.assignment_map : "${act.name}_${act.target_id}" => act }
   instance_arn       = tolist(data.aws_ssoadmin_instances.sso-instance.arns)[0]
   permission_set_arn = aws_ssoadmin_permission_set.permissions_set[each.value.name].arn
   principal_id       = local.groups[each.value.name]
   principal_type     = "GROUP"
 
-  target_id   = trimsuffix(each.key, "_${each.value.name}")
+  target_id   = replace(each.key, "${each.value.name}_", "")
   target_type = "AWS_ACCOUNT"
   depends_on = [
     aws_ssoadmin_permission_set.permissions_set,

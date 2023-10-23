@@ -10,6 +10,10 @@ output "assignments" {
   value = aws_ssoadmin_account_assignment.acct-assignment
 }
 
+output "admin_group" {
+  value = data.aws_identitystore_group.id_store_admin
+}
+
 output "groups" {
   value = data.aws_identitystore_group.id_store
 }
@@ -19,7 +23,7 @@ output "non_master_accounts" {
 }
 
 output "azuread_groups" {
-  value = azuread_groups.aad_groups
+  value = azuread_group.aad_groups
 }
 
 output "azuread_application" {
@@ -39,7 +43,7 @@ output "admin_permission_set" {
 }
 
 output "admin_permission_sets_arn" {
-  value = { for k, ps in data.aws_ssoadmin_permission_set.admin_permission_sets : k => ps.arn }
+  value = data.aws_ssoadmin_permission_set.admin_permission_sets.arn
 }
 
 output "admin_assignments" {

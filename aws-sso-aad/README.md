@@ -40,7 +40,7 @@ module "sso" {
 
 AWS SSO Permission sets is a combination of a Role and a policy which can be applied to an account. 
 
-### Permission ste configs
+### Permission set configs
 
 - creates azuread group with name <aws-role-<role_name>>
 - assigns azuread group to AWS SSO app
@@ -51,6 +51,10 @@ AWS SSO Permission sets is a combination of a Role and a policy which can be app
   - "global": attaches to every account in org. queried dynamically in module
   - "<account_id>": attaches to only the specified accounts
 
+### AzureAD Requirements
+Does NOT create AWS SSO Application or Service_Principal. These MUST be created prior
+- Update AWS SSO Serive_Principal `App-Roles` `User` role with `value = User` 
+  - This is for assigning groups to the role. Default is blank, and unassignable
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
