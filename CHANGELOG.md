@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.0](https://github.com/Gravitas-Security/aws-modules/compare/v2.5.2...v2.6.0) (2023-10-25)
+
+
+### Features
+
+* fixing admingroup assignment ([61c9fd0](https://github.com/Gravitas-Security/aws-modules/commit/61c9fd030d635fc397bdcbe8f48ee769c13bb691))
+
 ## [2.5.2](https://github.com/Gravitas-Security/aws-modules/compare/v2.5.1...v2.5.2) (2023-10-23)
 
 
