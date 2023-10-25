@@ -22,13 +22,13 @@ output "admin_group" {
   value = data.aws_identitystore_group.id_store_admin
 }
 
-# output "jumpcloud_admin_group" {
-#   value = jumpcloud_user_group.admin_role_group
-# }
+output "jumpcloud_admin_group" {
+  value = jumpcloud_user_group.admin_role_group
+}
 
-# output "jumpcloud_user_group" {
-#   value = jumpcloud_user_group.user_role_group
-# }
+output "jumpcloud_user_group" {
+  value = jumpcloud_user_group.user_groups
+}
 
 output "groups" {
   value = data.aws_identitystore_group.id_store
@@ -36,4 +36,8 @@ output "groups" {
 
 output "non_master_accounts" {
   value = data.aws_organizations_organization.org.non_master_accounts[*].id
+}
+
+output "org_accounts" {
+  value = data.aws_organizations_organization.org.accounts[*]
 }

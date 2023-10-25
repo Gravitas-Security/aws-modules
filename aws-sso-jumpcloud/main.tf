@@ -39,6 +39,7 @@ resource "jumpcloud_user_group_association" "user_group_association" {
 }
 
 resource "time_sleep" "wait_5_seconds" {
+  for_each = jumpcloud_user_group_association.user_group_association
   depends_on = [
     jumpcloud_user_group_association.user_group_association,
     jumpcloud_user_group_association.admin_group_association
@@ -75,17 +76,17 @@ data "aws_ssoadmin_permission_set" "admin_permission_sets" {
 
 ## Assign the AdministratorAccess permission set to every account in org
 resource "aws_ssoadmin_account_assignment" "admin_acct_assignment" {
-  for_each           = local.org_accounts
+  for_each           = { for accounts in local.global_accounts : "${accounts}" => accounts }
   instance_arn       = tolist(data.aws_ssoadmin_instances.sso-instance.arns)[0]
   permission_set_arn = data.aws_ssoadmin_permission_set.admin_permission_sets.arn
   principal_id       = data.aws_identitystore_group.id_store_admin.id
   principal_type     = "GROUP"
 
-  target_id   = local.org_accounts[each.key]
+  target_id   = each.key
   target_type = "AWS_ACCOUNT"
   depends_on = [
     data.aws_ssoadmin_permission_set.admin_permission_sets,
-    data.aws_identitystore_group.id_store
+    data.aws_identitystore_group.id_store_admin
   ]
 }
 

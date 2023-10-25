@@ -2,7 +2,7 @@ locals {
   managed_ps        = { for ps_name, ps_attrs in var.roles : ps_name => ps_attrs if can(ps_attrs.managed_policies) }
   acct_assignments  = { for ps_name, ps_attrs in var.roles : ps_name => ps_attrs if can(ps_attrs.assignments) }
   groups            = { for name, attrs in data.aws_identitystore_group.id_store : name => attrs.id if can(attrs.id) }
-  org_accounts      = { for name, attrs in data.aws_organizations_organization.org.non_master_accounts[*] : name => attrs.id if can(attrs.id) }
+  org_accounts      = { for name, attrs in data.aws_organizations_organization.org.accounts[*] : name => attrs.id if can(attrs.id) }
   identity_store_id = tolist(data.aws_ssoadmin_instances.sso-instance.identity_store_ids)[0]
   global_accounts   = data.aws_organizations_organization.org.accounts[*].id
 
