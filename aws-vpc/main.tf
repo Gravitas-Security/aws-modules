@@ -1,5 +1,3 @@
-### Comment to trigger workflow. delete after
-
 ### VPC Resources
 ## Create VPC and its required resources
 # Create VPC
