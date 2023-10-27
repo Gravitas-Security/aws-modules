@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.0](https://github.com/Gravitas-Security/aws-modules/compare/v2.6.0...v2.7.0) (2023-10-27)
+
+
+### Features
+
+* adding ipam module ([3bee9a6](https://github.com/Gravitas-Security/aws-modules/commit/3bee9a67b7c9c3d29b27819a246d9b929fec22d8))
+
 ## [2.6.0](https://github.com/Gravitas-Security/aws-modules/compare/v2.5.2...v2.6.0) (2023-10-25)
 
 
