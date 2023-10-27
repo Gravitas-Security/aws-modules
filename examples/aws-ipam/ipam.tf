@@ -12,6 +12,6 @@ module "ipam" {
   }
 
   custom_tags = {
-    repo = "github.com/cyberviking949/aws-infra/aws-ipam"
+    repo = "github.com/stuff"
   }
 }
