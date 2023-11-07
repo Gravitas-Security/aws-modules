@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.1](https://github.com/Gravitas-Security/aws-modules/compare/v2.7.0...v2.7.1) (2023-11-07)
+
+
+### Bug Fixes
+
+* updating aad module ([3381275](https://github.com/Gravitas-Security/aws-modules/commit/338127546b0fb5133fc77c601c70026b37d2d73a))
+
 ## [2.7.0](https://github.com/Gravitas-Security/aws-modules/compare/v2.6.0...v2.7.0) (2023-10-27)
 
 
