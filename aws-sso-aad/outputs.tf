@@ -53,3 +53,7 @@ output "admin_assignments" {
 output "admin_azuread_group" {
   value = azuread_group.aad_admin_group
 }
+
+output "org_accounts" {
+  value = data.aws_organizations_organization.org.accounts[*]
+}

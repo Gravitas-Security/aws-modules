@@ -11,7 +11,6 @@ resource "azuread_group" "aad_groups" {
 
 ## Create AzureAD group for AdministratorAccess
 resource "azuread_group" "aad_admin_group" {
-  for_each         = var.roles
   display_name     = "aws-role-AdministratorAccess"
   owners           = [data.azuread_client_config.client_config.object_id]
   security_enabled = true
@@ -29,9 +28,8 @@ data "azuread_service_principal" "aws_sso" {
 
 ## Assign the AdministratorAccess group to the AdministratorAccess role
 resource "azuread_app_role_assignment" "admin_group_assignment" {
-  for_each            = azuread_group.aad_admin_group
   app_role_id         = data.azuread_service_principal.aws_sso.app_role_ids["User"]
-  principal_object_id = azuread_group.aad_groups[each.key].object_id
+  principal_object_id = azuread_group.aad_admin_group.object_id
   resource_object_id  = data.azuread_service_principal.aws_sso.object_id
   depends_on = [
     data.azuread_service_principal.aws_sso,
@@ -51,6 +49,16 @@ resource "azuread_app_role_assignment" "group_assignment" {
   ]
 }
 
+resource "time_sleep" "wait_5_seconds" {
+  for_each = azuread_group.aad_groups
+  depends_on = [
+    azuread_app_role_assignment.group_assignment,
+    azuread_app_role_assignment.admin_group_assignment
+  ]
+
+  create_duration = "5s"
+}
+
 ## Get data for the AWS SSO Instance
 data "aws_ssoadmin_instances" "sso-instance" {}
 
@@ -64,11 +72,11 @@ data "aws_identitystore_group" "id_store_admin" {
   alternate_identifier {
     unique_attribute {
       attribute_path  = "DisplayName"
-      attribute_value = "aws-role-AdministratorAccess"
+      attribute_value = azuread_group.aad_admin_group.display_name
     }
   }
 
-  depends_on = [null_resource.dependency]
+  depends_on = [time_sleep.wait_5_seconds]
 }
 
 ## Get data for the default AdministratorAccess permission set
@@ -77,20 +85,19 @@ data "aws_ssoadmin_permission_set" "admin_permission_sets" {
   name         = "AdministratorAccess"
 }
 
-## Assign the AdministratorAccess permission set to every account in org and assign the AdministratorAccess group to the AdministratorAccess role
+## Assign the AdministratorAccess permission set to every account in org
 resource "aws_ssoadmin_account_assignment" "admin_acct_assignment" {
-  for_each           = local.org_accounts
+  for_each           = { for accounts in local.global_accounts : "${accounts}" => accounts }
   instance_arn       = tolist(data.aws_ssoadmin_instances.sso-instance.arns)[0]
   permission_set_arn = data.aws_ssoadmin_permission_set.admin_permission_sets.arn
   principal_id       = data.aws_identitystore_group.id_store_admin.id
   principal_type     = "GROUP"
 
-  target_id   = local.org_accounts[each.key]
+  target_id   = each.key
   target_type = "AWS_ACCOUNT"
   depends_on = [
-    aws_ssoadmin_permission_set.permissions_set,
-    data.aws_identitystore_group.id_store,
-    azuread_app_role_assignment.group_assignment
+    data.aws_ssoadmin_permission_set.admin_permission_sets,
+    data.aws_identitystore_group.id_store_admin
   ]
 }
 
@@ -144,12 +151,6 @@ resource "aws_ssoadmin_managed_policy_attachment" "policy-attachment" {
   depends_on         = [aws_ssoadmin_permission_set.permissions_set]
 }
 
-resource "null_resource" "dependency" {
-  triggers = {
-    dependency_id = join(",", var.identitystore_group_depends_on)
-  }
-}
-
 ## Get data for the AWS Identity Store groups
 data "aws_identitystore_group" "id_store" {
   for_each          = var.roles
@@ -162,7 +163,7 @@ data "aws_identitystore_group" "id_store" {
     }
   }
 
-  depends_on = [null_resource.dependency]
+  depends_on = [time_sleep.wait_5_seconds]
 }
 
 ## Create an account assignment for each account in the roles map and assign the identity store group to permission set
