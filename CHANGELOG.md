@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.0.0](https://github.com/Gravitas-Security/aws-modules/compare/v2.8.0...v3.0.0) (2024-04-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* fixing sso account mapping. This will want to recreate the permission sets
+
+### Features
+
+* fixing sso account mapping. This will want to recreate the permission sets ([cfaf5e3](https://github.com/Gravitas-Security/aws-modules/commit/cfaf5e3aab9fecc52308dd4cf6df843bb218170c))
+
 ## [2.8.0](https://github.com/Gravitas-Security/aws-modules/compare/v2.7.1...v2.8.0) (2024-04-30)
 
 
