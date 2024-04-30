@@ -23,7 +23,8 @@ resource "aws_organizations_organization" "org" {
     "inspector2.amazonaws.com",
     "access-analyzer.amazonaws.com",
     "ram.amazonaws.com",
-    "servicecatalog.amazonaws.com"
+    "servicecatalog.amazonaws.com",
+    "member.org.stacksets.cloudformation.amazonaws.com"
   ]
 }
 
@@ -117,3 +118,95 @@ resource "aws_organizations_policy_attachment" "org_tp_attachment" {
   target_id = each.value.target_id == "root" ? aws_organizations_organization.org.roots[0].id : aws_organizations_organizational_unit.org_ous[each.value.target_id].id
 }
 
+data "aws_caller_identity" "current" {}
+data "aws_partition" "current" {}
+data "aws_region" "current" {}
+
+resource "aws_s3_bucket" "org_trail_bucket" {
+  bucket        = "org-trail-bucket-${data.aws_caller_identity.current.account_id}"
+  force_destroy = true
+  tags = merge(
+    var.defaultTags,
+    var.custom_tags
+  )
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "org-trail-bucket-lifecycle" {
+  bucket = aws_s3_bucket.org_trail_bucket.id
+
+  rule {
+    id = "expire-90-days"
+    expiration {
+      days = 90
+    }
+    status = "Enabled"
+}
+}
+
+data "aws_iam_policy_document" "org_trail_bucketpolicy" {
+  statement {
+    sid    = "AWSCloudTrailAclCheck"
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["cloudtrail.amazonaws.com"]
+    }
+
+    actions   = ["s3:GetBucketAcl"]
+    resources = [aws_s3_bucket.org_trail_bucket.arn]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceArn"
+      values   = ["arn:${data.aws_partition.current.partition}:cloudtrail:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:trail/org-trail"]
+    }
+  }
+
+  statement {
+    sid    = "AWSCloudTrailWrite"
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["cloudtrail.amazonaws.com"]
+    }
+
+    actions   = ["s3:PutObject"]
+    resources = ["${aws_s3_bucket.org_trail_bucket.arn}/prefix/AWSLogs/*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "s3:x-amz-acl"
+      values   = ["bucket-owner-full-control"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceArn"
+      values   = ["arn:${data.aws_partition.current.partition}:cloudtrail:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:trail/org-trail"]
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "org_trail_bucketpolicy" {
+  bucket = aws_s3_bucket.org_trail_bucket.id
+  policy = data.aws_iam_policy_document.org_trail_bucketpolicy.json
+}
+
+resource "aws_cloudtrail" "org_trail" {
+  depends_on = [aws_s3_bucket_policy.org_trail_bucketpolicy]
+
+  name                          = "org-trail"
+  s3_bucket_name                = aws_s3_bucket.org_trail_bucket.id
+  s3_key_prefix                 = "prefix"
+  include_global_service_events = true
+  is_organization_trail = true
+  is_multi_region_trail = true
+  event_selector {
+    read_write_type           = "All"
+    include_management_events = true
+  }
+  tags = merge(
+    var.defaultTags,
+    var.custom_tags
+  )
+}
