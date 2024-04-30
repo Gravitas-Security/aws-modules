@@ -123,12 +123,28 @@ data "aws_partition" "current" {}
 data "aws_region" "current" {}
 
 resource "aws_s3_bucket" "org_trail_bucket" {
+  #checkov:skip=CKV_AWS_21: "Versioning not necessary"
+  #checkov:skip=CKV_AWS_144: "Replication unecessary"
+  #checkov:skip=CKV_AWS_145: "Encrypting with SSE"
+  #checkov:skip=CKV_AWS-18: "Access logging disabled for costs"
+  
   bucket        = "org-trail-bucket-${data.aws_caller_identity.current.account_id}"
   force_destroy = true
+  
   tags = merge(
     var.defaultTags,
     var.custom_tags
   )
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "org_trail_bucket_sse" {
+  bucket = aws_s3_bucket.org_trail_bucket.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm     = "AES256"
+    }
+  }
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "org-trail-bucket-lifecycle" {
@@ -193,6 +209,9 @@ resource "aws_s3_bucket_policy" "org_trail_bucketpolicy" {
 }
 
 resource "aws_cloudtrail" "org_trail" {
+  #checkov:skip=CKV2_AWS_10: "Not sending to cloudwatch for cost reasons"
+  #checkov:skip=CKV_AWS_35: "Not encrypting for costs"
+  #checkov:skip=CKV_AWS_36: "Not doing log validation for costs"
   depends_on = [aws_s3_bucket_policy.org_trail_bucketpolicy]
 
   name                          = "org-trail"
