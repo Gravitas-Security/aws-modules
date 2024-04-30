@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.3](https://github.com/Gravitas-Security/aws-modules/compare/v3.0.2...v3.0.3) (2024-04-30)
+
+
+### Bug Fixes
+
+* fixing another checkov skip ([aeeedb3](https://github.com/Gravitas-Security/aws-modules/commit/aeeedb32a3950e3624e2b477bf9c353e81f1a80d))
+* fixing another checkov skip ([2dfcbff](https://github.com/Gravitas-Security/aws-modules/commit/2dfcbffb9c956cbad75431c4f456e99bbc4e96a9))
+
 ## [3.0.2](https://github.com/Gravitas-Security/aws-modules/compare/v3.0.1...v3.0.2) (2024-04-30)
 
 
