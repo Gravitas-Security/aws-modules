@@ -18,15 +18,17 @@ locals {
 
   # Create name and account assignment maps list
   assignment_map = flatten([
-    for name, attrs in local.acct_assignments :
-    (attrs.assignments == ["global"]) ? [for id in local.global_accounts : {
-      name      = name
-      target_id = id
-      }] : [
-      for account in attrs.assignments : {
-        name      = name
-        target_id = account
-      } if can(attrs.assignments)
-    ]
+    for name, attrs in local.acct_assignments : 
+      attrs.assignments == ["global"] ? [
+        for id in local.global_accounts : {
+          name      = name
+          target_id = id
+        }
+      ] : [
+        for account_name in attrs.assignments : {
+          name      = name
+          target_id = local.org_accounts[account_name]
+        } if can(local.org_accounts[account_name])
+      ]
   ])
 }
