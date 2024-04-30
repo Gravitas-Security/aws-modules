@@ -127,7 +127,7 @@ resource "aws_s3_bucket" "org_trail_bucket" {
   #checkov:skip=CKV_AWS_144:Replication unecessary
   #checkov:skip=CKV_AWS_145:Encrypting with SSE
   #checkov:skip=CKV_AWS_18:Access logging disabled for costs
-  #checkov:skip=CKV2_AWS_6:Blocked at org level
+  #checkov:skip=CKV2_AWS_6:Blocked at org level and unecessary
   #checkov:skip=CKV_AWS_19:SSE encrypion is enabled
 
   bucket        = "org-trail-bucket-${data.aws_caller_identity.current.account_id}"
