@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.0](https://github.com/Gravitas-Security/aws-modules/compare/v2.7.1...v2.8.0) (2024-04-30)
+
+
+### Features
+
+* adding org trail and supporting resources ([65b4f7d](https://github.com/Gravitas-Security/aws-modules/commit/65b4f7dedb1412faa9d97fa96e7199dbdf1b2341))
+
 ## [2.7.1](https://github.com/Gravitas-Security/aws-modules/compare/v2.7.0...v2.7.1) (2023-11-07)
 
 
