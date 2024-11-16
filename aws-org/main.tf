@@ -3,6 +3,7 @@ resource "aws_organizations_organization" "org" {
   feature_set = "ALL"
   enabled_policy_types = [
     "SERVICE_CONTROL_POLICY",
+    "RESOURCE_CONTROL_POLICY",
     "TAG_POLICY"
   ]
   aws_service_access_principals = [
@@ -24,7 +25,8 @@ resource "aws_organizations_organization" "org" {
     "access-analyzer.amazonaws.com",
     "ram.amazonaws.com",
     "servicecatalog.amazonaws.com",
-    "member.org.stacksets.cloudformation.amazonaws.com"
+    "member.org.stacksets.cloudformation.amazonaws.com",
+    "iam.amazonaws.com"
   ]
 }
 
