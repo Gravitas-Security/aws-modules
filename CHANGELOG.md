@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.0](https://github.com/Gravitas-Security/aws-modules/compare/v3.0.3...v3.1.0) (2024-11-16)
+
+
+### Features
+
+* added functionality ([429ade7](https://github.com/Gravitas-Security/aws-modules/commit/429ade7604e64df698d22874f42318b2249be054))
+
 ## [3.0.3](https://github.com/Gravitas-Security/aws-modules/compare/v3.0.2...v3.0.3) (2024-04-30)
 
 
