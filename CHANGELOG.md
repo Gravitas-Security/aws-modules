@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.1](https://github.com/Gravitas-Security/aws-modules/compare/v3.1.0...v3.1.1) (2024-11-18)
+
+
+### Bug Fixes
+
+* adding in RCP code ([dc7916b](https://github.com/Gravitas-Security/aws-modules/commit/dc7916b0f23df2d9018a5f4d6f57f6da83b5d779))
+
 ## [3.1.0](https://github.com/Gravitas-Security/aws-modules/compare/v3.0.3...v3.1.0) (2024-11-16)
 
 
