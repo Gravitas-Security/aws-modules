@@ -1,0 +1,20 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "denyAdminPolicy",
+        "Effect": "Deny",
+        "Action": [
+          "iam:AttachUserPolicy",
+          "iam:AttachRolePolicy",
+          "iam:AttachGroupPolicy"
+        ],
+        "Resource": "*",
+        "Condition": {
+          "ArnEquals": {
+            "iam:PolicyARN": "arn:aws:iam::aws:policy/AdministratorAccess"
+          }
+        }
+      }
+    ]
+  }

@@ -33,6 +33,15 @@ variable "policies" {
   default     = {}
 }
 
+variable "resource_policies" {
+  type = map(object({
+    description = string
+    attachments = any
+  }))
+  description = "A map of RCP policies to create."
+  default     = {}
+}
+
 variable "tag_policies" {
   type = map(object({
     description = string

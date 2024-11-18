@@ -1,0 +1,27 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "RCPEnforceConfusedDeputyProtection",
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": [
+                "s3:*",
+                "sqs:*",
+                "secretsmanager:*"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringNotEqualsIfExists": {
+                    "aws:SourceOrgID": "o-dpo5r08hon"
+                },
+                "Bool": {
+                    "aws:PrincipalIsAWSService": "true"
+                },
+                "Null": {
+                    "aws:SourceAccount": "false"
+                }
+            }
+        }
+    ]
+}

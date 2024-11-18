@@ -20,6 +20,16 @@ locals {
     ]
   ])
 
+  rcp_attachments = { for rcp_name, rcp_attrs in var.resource_policies : rcp_name => rcp_attrs if can(rcp_attrs.attachments) }
+  rcp_attachment_map = flatten([
+    for name, attrs in local.rcp_attachments : [
+      for ou in attrs.attachments : {
+        name      = name
+        target_id = ou
+      } if can(attrs.attachments)
+    ]
+  ])
+
   tp_attachments = { for tp_name, tp_attrs in var.tag_policies : tp_name => tp_attrs if can(tp_attrs.attachments) }
   tp_attachment_map = flatten([
     for name, attrs in local.tp_attachments : [
