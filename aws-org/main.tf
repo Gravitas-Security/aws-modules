@@ -30,6 +30,13 @@ resource "aws_organizations_organization" "org" {
   ]
 }
 
+resource "aws_iam_organizations_features" "org_root_mgmt" {
+  enabled_features = [
+    "RootCredentialsManagement",
+    "RootSessions"
+  ]
+}
+
 resource "aws_ram_sharing_with_organization" "org_share" {}
 
 # Create AWS Organization OU's
