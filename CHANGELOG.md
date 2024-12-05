@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.0](https://github.com/Gravitas-Security/aws-modules/compare/v3.1.1...v3.2.0) (2024-12-05)
+
+
+### Features
+
+* adding root credential mgmt feature to org module ([279ae65](https://github.com/Gravitas-Security/aws-modules/commit/279ae653b0f806d21f25f8dcb0a6efa7de656cc1))
+
 ## [3.1.1](https://github.com/Gravitas-Security/aws-modules/compare/v3.1.0...v3.1.1) (2024-11-18)
 
 
