@@ -4,6 +4,7 @@ resource "aws_organizations_organization" "org" {
   enabled_policy_types = [
     "SERVICE_CONTROL_POLICY",
     "RESOURCE_CONTROL_POLICY",
+    "DECLARATIVE_POLICY_EC2",
     "TAG_POLICY"
   ]
   aws_service_access_principals = [
@@ -26,7 +27,8 @@ resource "aws_organizations_organization" "org" {
     "ram.amazonaws.com",
     "servicecatalog.amazonaws.com",
     "member.org.stacksets.cloudformation.amazonaws.com",
-    "iam.amazonaws.com"
+    "iam.amazonaws.com",
+    "report.declarative-policies-ec2.amazonaws.com"
   ]
 }
 
