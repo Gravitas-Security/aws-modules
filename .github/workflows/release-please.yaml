@@ -12,7 +12,26 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - uses: google-github-actions/release-please-action@v3.7.12
+      - id: release
+        uses: google-github-actions/release-please-action@v3.7.12
         with:
           release-type: terraform-module # Multiple release types are supported
+          default-branch: main
+
+      # Merge the release PR as soon as it is opened or updated.
+      - name: Merge release PR
+        id: merge
+        if: steps.release.outputs.pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ fromJSON(steps.release.outputs.pr).number }}
+        run: gh pr merge "$PR_NUMBER" --squash --admin --repo "$GITHUB_REPOSITORY"
+
+      # A merge made with GITHUB_TOKEN does not trigger another workflow run,
+      # so tag and publish the release from this run.
+      - name: Tag and publish release
+        if: steps.merge.outcome == 'success'
+        uses: google-github-actions/release-please-action@v3.7.12
+        with:
+          release-type: terraform-module
           default-branch: main
